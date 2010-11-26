@@ -10,12 +10,8 @@ class temporalrange:
         
         if not isinstance(to, self.temporal):
             raise TypeError("to must be an instance of %s" % self.temporal.__name__)
-        
-        if frm > to:
-            raise ValueError('frm must be lower than to')
-        
-        self.frm = frm
-        self.to = to
+
+        self.frm, self.to = sorted([frm, to])
         
     def intersection(self, range):
         if not isinstance(range, self.__class__):
@@ -53,10 +49,8 @@ class datetimerange(temporalrange):
         ...
     TypeError: to must be an instance of datetime
     
-    >>> datetimerange(b, a)
-    Traceback (most recent call last):
-        ...
-    ValueError: frm must be lower than to
+    >>> datetimerange(b, a).frm == a
+    True
     
     >>> b in datetimerange(a, c)
     True
@@ -91,10 +85,8 @@ class daterange(temporalrange):
         ...
     TypeError: to must be an instance of date
     
-    >>> daterange(b, a)
-    Traceback (most recent call last):
-        ...
-    ValueError: frm must be lower than to
+    >>> daterange(b, a).frm == a
+    True
     
     >>> b in daterange(a, c)
     True
@@ -129,10 +121,8 @@ class timerange(temporalrange):
         ...
     TypeError: to must be an instance of time
     
-    >>> timerange(b, a)
-    Traceback (most recent call last):
-        ...
-    ValueError: frm must be lower than to
+    >>> timerange(b, a).frm == a
+    True
     
     >>> b in timerange(a, c)
     True
