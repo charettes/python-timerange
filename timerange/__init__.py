@@ -35,14 +35,20 @@ class temporalrange:
         
         return item >= self.frm and item <= self.to
         
+    def __hash__(self):
+        return hash(repr(self))
+        
+    def __repr__(self):
+        return "timerange.%s(%s, %s)" % (self.__class__.__name__, repr(self.frm), repr(self.to))
+        
 class datetimerange(temporalrange):
     """
     
-    >>> a = datetime(2010, 05, 14, 23)
-    >>> b = datetime(2010, 05, 15)
-    >>> c = datetime(2010, 05, 15, 3)
-    >>> d = datetime(2010, 05, 16)
-    >>> e = datetime(2010, 05, 17)
+    >>> a = datetime(2010, 5, 14, 23)
+    >>> b = datetime(2010, 5, 15)
+    >>> c = datetime(2010, 5, 15, 3)
+    >>> d = datetime(2010, 5, 16)
+    >>> e = datetime(2010, 5, 17)
     
     >>> datetimerange(a, 12)
     Traceback (most recent call last):
@@ -51,6 +57,12 @@ class datetimerange(temporalrange):
     
     >>> datetimerange(b, a).frm == a
     True
+    
+    >>> hash(datetimerange(a, b)) == hash(datetimerange(a, b))
+    True
+    
+    >>> repr(datetimerange(a, b))
+    'timerange.datetimerange(datetime.datetime(2010, 5, 14, 23, 0), datetime.datetime(2010, 5, 15, 0, 0))'
     
     >>> b in datetimerange(a, c)
     True
@@ -74,11 +86,11 @@ class datetimerange(temporalrange):
 class daterange(temporalrange):
     """
     
-    >>> a = date(2010, 05, 14)
-    >>> b = date(2010, 05, 15)
-    >>> c = date(2010, 05, 17)
-    >>> d = date(2010, 05, 18)
-    >>> e = date(2010, 05, 19)
+    >>> a = date(2010, 5, 14)
+    >>> b = date(2010, 5, 15)
+    >>> c = date(2010, 5, 17)
+    >>> d = date(2010, 5, 18)
+    >>> e = date(2010, 5, 19)
     
     >>> daterange(a, 12)
     Traceback (most recent call last):
@@ -87,6 +99,12 @@ class daterange(temporalrange):
     
     >>> daterange(b, a).frm == a
     True
+    
+    >>> hash(daterange(a, b)) == hash(daterange(a, b))
+    True
+    
+    >>> repr(daterange(a, b))
+    'timerange.daterange(datetime.date(2010, 5, 14), datetime.date(2010, 5, 15))'
     
     >>> b in daterange(a, c)
     True
@@ -123,6 +141,12 @@ class timerange(temporalrange):
     
     >>> timerange(b, a).frm == a
     True
+    
+    >>> hash(timerange(a, b)) == hash(timerange(a, b))
+    True
+    
+    >>> repr(timerange(a, b))
+    'timerange.timerange(datetime.time(12, 15), datetime.time(12, 25))'
     
     >>> b in timerange(a, c)
     True
