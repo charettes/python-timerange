@@ -28,6 +28,10 @@ class temporalrange:
         
     __and__ = intersection
     
+    def include(self, range):
+        """Test if the range is contained within this one"""
+        return range.frm >= self.frm and range.to <= self.to
+    
     def __contains__(self, item):
         if not isinstance(item, self.temporal):
             raise TypeError("a %s only contains instances of %s" % (self.__class__.__name__,
@@ -94,6 +98,11 @@ class datetimerange(temporalrange):
     
     >>> datetimerange(a, b) & datetimerange(d, e)
     
+    >>> datetimerange(a, d).include(datetimerange(a, c))
+    True
+    
+    >>> datetimerange(a, c).include(datetimerange(a, d))
+    False
     """
     temporal = datetime
 
@@ -142,6 +151,11 @@ class daterange(temporalrange):
     
     >>> daterange(a, b) & daterange(d, e)
     
+    >>> daterange(a, d).include(daterange(a, c))
+    True
+    
+    >>> daterange(a, c).include(daterange(a, d))
+    False
     """
     temporal = date
 
@@ -190,6 +204,11 @@ class timerange(temporalrange):
     
     >>> timerange(a, b) & timerange(d, e)
     
+    >>> timerange(a, d).include(timerange(a, c))
+    True
+    
+    >>> timerange(a, c).include(timerange(a, d))
+    False
     """
     temporal = time
     
