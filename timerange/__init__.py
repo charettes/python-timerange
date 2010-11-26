@@ -32,6 +32,10 @@ class temporalrange:
         """Test if the range is contained within this one"""
         return range.frm >= self.frm and range.to <= self.to
     
+    def delta(self):
+        """Fetch the datetime.timedelta between self.frm and self.to"""
+        return self.to - self.frm
+    
     def __contains__(self, item):
         if not isinstance(item, self.temporal):
             raise TypeError("a %s only contains instances of %s" % (self.__class__.__name__,
@@ -75,6 +79,9 @@ class datetimerange(temporalrange):
     
     >>> repr(datetimerange(a, b))
     'timerange.datetimerange(datetime.datetime(2010, 5, 14, 23, 0), datetime.datetime(2010, 5, 15, 0, 0))'
+    
+    >>> datetimerange(a, b).delta()
+    datetime.timedelta(0, 3600)
     
     >>> a == datetime(2010, 5, 14, 23)
     True
@@ -129,6 +136,9 @@ class daterange(temporalrange):
     >>> repr(daterange(a, b))
     'timerange.daterange(datetime.date(2010, 5, 14), datetime.date(2010, 5, 15))'
     
+    >>> daterange(a, b).delta()
+    datetime.timedelta(1)
+    
     >>> a == date(2010, 5, 14)
     True
     
@@ -182,6 +192,9 @@ class timerange(temporalrange):
     >>> repr(timerange(a, b))
     'timerange.timerange(datetime.time(12, 15), datetime.time(12, 25))'
     
+    >>> timerange(a, b).delta()
+    datetime.timedelta(0, 600)
+    
     >>> a == time(12, 15)
     True
     
@@ -211,6 +224,20 @@ class timerange(temporalrange):
     False
     """
     temporal = time
+    
+    #@staticmethod
+    def __datetime(time):
+      return datetime.min.replace(
+                                  hour=time.hour,
+                                  minute=time.minute,
+                                  second=time.second,
+                                  microsecond=time.microsecond,
+                                  tzinfo=time.tzinfo
+                                  )
+    __datetime = staticmethod(__datetime)
+    
+    def delta(self):
+        return timerange.__datetime(self.to) - timerange.__datetime(self.frm)
     
 if __name__ == "__main__":
     import doctest
