@@ -34,6 +34,14 @@ class temporalrange:
                                                                      self.temporal.__name__))
         
         return item >= self.frm and item <= self.to
+    
+    def __eq__(self, other):
+        if not isintance(other, self.__class__):
+            return NotImplemented
+        return self.to == other.to and self.frm == other.frm
+        
+    def __ne__(self, other):
+        return not self.__eq__(other)
         
     def __hash__(self):
         return hash(repr(self))
@@ -63,6 +71,12 @@ class datetimerange(temporalrange):
     
     >>> repr(datetimerange(a, b))
     'timerange.datetimerange(datetime.datetime(2010, 5, 14, 23, 0), datetime.datetime(2010, 5, 15, 0, 0))'
+    
+    >>> a == datetime(2010, 5, 14, 23)
+    True
+    
+    >>> a == b
+    False
     
     >>> b in datetimerange(a, c)
     True
@@ -106,6 +120,12 @@ class daterange(temporalrange):
     >>> repr(daterange(a, b))
     'timerange.daterange(datetime.date(2010, 5, 14), datetime.date(2010, 5, 15))'
     
+    >>> a == date(2010, 5, 14)
+    True
+    
+    >>> a == b
+    False
+    
     >>> b in daterange(a, c)
     True
     
@@ -147,6 +167,12 @@ class timerange(temporalrange):
     
     >>> repr(timerange(a, b))
     'timerange.timerange(datetime.time(12, 15), datetime.time(12, 25))'
+    
+    >>> a == time(12, 15)
+    True
+    
+    >>> a == b
+    False
     
     >>> b in timerange(a, c)
     True
