@@ -6,7 +6,7 @@ class temporalrange:
     
     def __init__(self, frm, to):
         if not isinstance(frm, self.temporal):
-            raise TypeError("to must be an instance of %s" % self.temporal.__name__)
+            raise TypeError("frm must be an instance of %s" % self.temporal.__name__)
         
         if not isinstance(to, self.temporal):
             raise TypeError("to must be an instance of %s" % self.temporal.__name__)
